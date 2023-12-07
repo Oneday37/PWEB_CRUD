@@ -1,0 +1,25 @@
+.addcss{
+       padding:10px;
+       background-color: green;
+       border-radius: 15px;
+       color: aliceblue;
+}
+
+.findcss{
+       padding:10px;
+       border-radius: 15px;
+}
+
+.updatecss{
+       padding:10px;
+       background-color: rgb(255, 255, 0);
+       border-radius: 15px;
+       color: black;
+}
+
+.deletecss{
+       padding:10px;
+       background-color: red;
+       border-radius: 15px;
+       color: aliceblue;
+}

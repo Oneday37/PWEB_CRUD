@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Test</title>
+    <link rel="stylesheet" , href="style.css">
+</head>
+
+<body>
+    <fieldset>
+        <center>
+            <h1>Reservasi Lapangan Futsal</h1>
+        </center>
+
+        <h3>
+            Nama:
+            <input type="text" placeholder="Stuart Kaine" id="IDnama" />
+        </h3>
+
+        <h3>
+            Tanggal Reservasi:
+            <input type="date" id="IDtanggal" />
+        </h3>
+
+        <h3>
+            Jadwal Reservasi:
+            <table border="10">
+                <tr>
+                    <th>Shift</th>
+                    <th>Jam Operasional</th>
+                </tr>
+                <tr>
+                    <td> 1 </td>
+                    <td> 08:00 - 09:00 </td>
+                </tr>
+                <tr>
+                    <td> 2 </td>
+                    <td> 09:00 - 10:00 </td>
+                </tr>
+                <tr>
+                    <td> 3 </td>
+                    <td> 10:00 - 11:00 </td>
+                </tr>
+                <tr>
+                    <td> 4 </td>
+                    <td> 11:00 - 12:00 </td>
+                </tr>
+                <tr>
+                    <td> 5 </td>
+                    <td> 12:00 - 13:00 </td>
+                </tr>
+            </table>
+        </h3>
+
+        <h3>
+            Pliih Jam Sesuai Shift
+            <input type="text" id="jam">
+        </h3>
+
+        <button id="insert" class="addcss">Booking Lapangan</button>
+        <button id="update" class="updatecss">Update Reservasi</button>
+        <button id="delete" class="deletecss">Delete</button>
+
+        <hr>
+
+        <h3>Nama:
+            <input type="text" placeholder="Stuart Kaine" id="findName" />
+        </h3>
+        <button id="find" class="findcss">Cari Reservasi</button>
+        <h3 id="detaliNama" type="text">Nama:</h3>
+        <h3 id="detaliTanggal" type="date">Tanggal: </h3>
+        <h3 id="detaliWaktu" type="date">Waktu: </h3>
+
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+            import { getDatabase, set, get, update, remove, ref, child } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyCw79Rb9K7ThXZJyQSGcTVHf5w3bw19CfE",
+                authDomain: "projekpweb-d4b6a.firebaseapp.com",
+                databaseURL: "https://projekpweb-d4b6a-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "projekpweb-d4b6a",
+                storageBucket: "projekpweb-d4b6a.appspot.com",
+                messagingSenderId: "211036566558",
+                appId: "1:211036566558:web:2e29477d61de20022d2a0f"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase();
+
+            var getNama = document.querySelector('#IDnama');
+            var getTanggal = document.querySelector("#IDtanggal");
+            var getJam = document.querySelector("#jam");
+            var getIdName = document.querySelector("#findName");
+            var detaliNama = document.querySelector("#detaliNama");
+            var detaliTanggal = document.querySelector("#detaliTanggal");
+            var detaliWaktu = document.querySelector("#detaliWaktu");
+
+            var insertBtn = document.querySelector("#insert");
+            var updateBtn = document.querySelector("#update");
+            var deleteBtn = document.querySelector("#delete");
+            var findBtn = document.querySelector("#find");
+
+            function insertData() {
+                set(ref(db, "Reservasi Futsal/" + getNama.value), {
+                    Nama: getNama.value,
+                    Tanggal: getTanggal.value,
+                    Reservasi: getJam.value,
+                }).then(() => {
+                    alert("Berhasli Membuat Reservasi");
+                }).catch((error) => {
+                    alert(error);
+                });
+            }
+
+            function updateData() {
+                update(ref(db, "Reservasi Futsal/" + getNama.value), {
+                    Nama: getNama.value,
+                    Tanggal: getTanggal.value,
+                    Reservasi: getJam.value,
+                }).then(() => {
+                    alert("Data Berhasli Dirubah!!!")
+                }).catch((error) => {
+                    alert(error);
+                })
+            }
+
+            function deleteData() {
+                remove(ref(db, "Reservasi Futsal/" + getNama.value)).then(() => {
+                    alert("Data Reservasi Berhasli Dihapus")
+                }).catch((error) => {
+                    alert(error);
+                })
+            }
+
+            function findData() {
+                const dbref = ref(db);
+
+                get(child(dbref, "Reservasi Futsal/" + getIdName.value)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        detaliNama.innerHTML = "Nama: " + snapshot.val().Nama;
+                        detaliTanggal.innerHTML = "Tanggal: " + snapshot.val().Tanggal;
+                        detaliWaktu.innerHTML = "Waktu: " + snapshot.val().Reservasi;
+                    } else {
+                        alert("Anda Belum Melakukan Reservasi");
+                    }
+                }).catch((error) => {
+                    alert(error)
+                })
+            }
+
+
+            insertBtn.addEventListener('click', insertData);
+            updateBtn.addEventListener('click', updateData);
+            deleteBtn.addEventListener('click', deleteData);
+            findBtn.addEventListener('click', findData);
+        </script>
+    </fieldset>
+</body>
+</html>
